@@ -2,13 +2,30 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-function NewPage() {
+function NewPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, setValue } = useForm();
+
+  useEffect(() => {
+    if (params.id) {
+      axios.get(`/api/tasks/${params.id}`).then((res) => {
+        setValue("title", res.data.title);
+        setValue("description", res.data.description);
+      });
+    }
+  }, []);
+
   const onSubmit = handleSubmit(async (data) => {
-    const res = await axios.post("/api/tasks", data);
+    if (params.id) {
+      await axios.put(`/api/tasks/${params.id}`, data);
+    } else {
+      await axios.post("/api/tasks", data);
+    }
+
     router.push("/");
+    router.refresh();
   });
 
   return (
@@ -36,7 +53,7 @@ function NewPage() {
           {...register("description")}
         ></textarea>
         <button className="bg-sky-500 px-3 py-1 rounded-md text-white mt-2">
-          Create
+          {params.id ? "Update" : "Create"}
         </button>
       </form>
     </section>
