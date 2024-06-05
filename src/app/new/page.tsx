@@ -29,8 +29,11 @@ function NewPage({ params }: { params: { id: string } }) {
   });
 
   return (
-    <section className="h-screen flex items-center justify-center">
-      <form onSubmit={onSubmit}>
+    <section className="h-[calc(100vh-7rem)] flex items-center justify-center">
+      <form onSubmit={onSubmit} className="w-1/4">
+        <h1 className="text-3xl font-bold">
+          {params.id ? "Update" : "Create"} Task
+        </h1>
         <label htmlFor="title" className="font-bold text-xs">
           Write your title:
         </label>
@@ -39,7 +42,7 @@ function NewPage({ params }: { params: { id: string } }) {
           type="text"
           placeholder="Write a title"
           className="px-3 py-1 border border-gray-300 rounded-md shadow-xs
-          focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 text-black block mb-2"
+          focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 text-black block mb-2 w-full"
           {...register("title")}
         />
         <label htmlFor="description" className="font-bold text-xs">
