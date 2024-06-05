@@ -52,9 +52,26 @@ function NewPage({ params }: { params: { id: string } }) {
         focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 text-black block w-full"
           {...register("description")}
         ></textarea>
-        <button className="bg-sky-500 px-3 py-1 rounded-md text-white mt-2">
-          {params.id ? "Update" : "Create"}
-        </button>
+
+        <div className="flex justify-between">
+          <button className="bg-sky-500 px-3 py-1 rounded-md text-white mt-2">
+            {params.id ? "Update" : "Create"}
+          </button>
+
+          <button
+            type="button"
+            className="bg-sky-500 px-3 py-1 rounded-md text-white mt-2"
+            onClick={async () => {
+              if (confirm("Are you sure you want to delete this taks")) {
+                await axios.delete(`/api/tasks/${params.id}`);
+                router.push("/");
+                router.refresh();
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
       </form>
     </section>
   );
